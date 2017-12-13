@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context="ai.deepar.example.MainActivity">
 
-
-
     <SurfaceView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -36,6 +34,16 @@
             android:layout_above="@+id/linearLayout"
             android:layout_marginStart="17dp"
             android:layout_toEndOf="@+id/recordButton"
+            android:background="@null"
+            android:scaleType="centerInside"
+            android:src="@drawable/record_selector" />
+
+        <ImageButton
+            android:id="@+id/shareButton"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_above="@+id/previousMask"
+            android:layout_alignStart="@+id/switchCamera"
             android:background="@null"
             android:scaleType="centerInside"
             android:src="@drawable/record_selector" />

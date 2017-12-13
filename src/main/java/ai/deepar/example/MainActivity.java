@@ -1,11 +1,14 @@
 package ai.deepar.example;
 
 import android.Manifest;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -20,7 +23,6 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -40,6 +42,7 @@ public class MainActivity extends PermissionsActivity implements AREventListener
     private ImageButton nextMask;
     private ImageButton previousMask;
     private ImageButton videoButton;
+    private ImageButton shareButton;
 
     private RadioButton radioMasks;
     private RadioButton radioEffects;
@@ -66,6 +69,8 @@ public class MainActivity extends PermissionsActivity implements AREventListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
         deepAR = new DeepAR();
         deepAR.initialize(this, this);
     }
@@ -116,24 +121,28 @@ public class MainActivity extends PermissionsActivity implements AREventListener
 
         masks = new ArrayList<>();
         masks.add(new AREffect("none", AREffect.EffectTypeMask));
-        masks.add(new AREffect("aviators", AREffect.EffectTypeMask));
-        masks.add(new AREffect("bigmouth", AREffect.EffectTypeMask));
-        masks.add(new AREffect("dalmatian", AREffect.EffectTypeMask));
-        masks.add(new AREffect("flowers", AREffect.EffectTypeMask));
-        masks.add(new AREffect("koala", AREffect.EffectTypeMask));
-        masks.add(new AREffect("lion", AREffect.EffectTypeMask));
-        masks.add(new AREffect("smallface", AREffect.EffectTypeMask));
-        masks.add(new AREffect("teddycigar", AREffect.EffectTypeMask));
-        masks.add(new AREffect("kanye", AREffect.EffectTypeMask));
-        masks.add(new AREffect("tripleface", AREffect.EffectTypeMask));
-        masks.add(new AREffect("sleepingmask", AREffect.EffectTypeMask));
-        masks.add(new AREffect("fatify", AREffect.EffectTypeMask));
-        masks.add(new AREffect("obama", AREffect.EffectTypeMask));
-        masks.add(new AREffect("mudmask", AREffect.EffectTypeMask));
-        masks.add(new AREffect("pug", AREffect.EffectTypeMask));
-        masks.add(new AREffect("slash", AREffect.EffectTypeMask));
-        masks.add(new AREffect("twistedface", AREffect.EffectTypeMask));
-        masks.add(new AREffect("grumpycat", AREffect.EffectTypeMask));
+        //masks.add(new AREffect("aviators", AREffect.EffectTypeMask));
+        //masks.add(new AREffect("bigmouth", AREffect.EffectTypeMask));
+        //masks.add(new AREffect("dalmatian", AREffect.EffectTypeMask));
+        //masks.add(new AREffect("flowers", AREffect.EffectTypeMask));
+        //masks.add(new AREffect("koala", AREffect.EffectTypeMask));
+        //masks.add(new AREffect("lion", AREffect.EffectTypeMask));
+        //masks.add(new AREffect("smallface", AREffect.EffectTypeMask));
+        //masks.add(new AREffect("teddycigar", AREffect.EffectTypeMask));
+        //masks.add(new AREffect("kanye", AREffect.EffectTypeMask));
+        //masks.add(new AREffect("tripleface", AREffect.EffectTypeMask));
+        //masks.add(new AREffect("sleepingmask", AREffect.EffectTypeMask));
+        //masks.add(new AREffect("fatify", AREffect.EffectTypeMask));
+        //masks.add(new AREffect("obama", AREffect.EffectTypeMask));
+        //masks.add(new AREffect("mudmask", AREffect.EffectTypeMask));
+        //masks.add(new AREffect("pug", AREffect.EffectTypeMask));
+        //masks.add(new AREffect("slash", AREffect.EffectTypeMask));
+        //masks.add(new AREffect("twistedface", AREffect.EffectTypeMask));
+        //masks.add(new AREffect("grumpycat", AREffect.EffectTypeMask));
+        masks.add(new AREffect("dark_vador", AREffect.EffectTypeMask));
+        masks.add(new AREffect("casque_xwing", AREffect.EffectTypeMask));
+        masks.add(new AREffect("grievoushead", AREffect.EffectTypeMask));
+        masks.add(new AREffect("stormtroop", AREffect.EffectTypeMask));
 
         effects = new ArrayList<>();
         effects.add(new AREffect("none", AREffect.EffectTypeAction));
@@ -277,6 +286,23 @@ public class MainActivity extends PermissionsActivity implements AREventListener
                     String name = new SimpleDateFormat("yyyy-MM-dd_hhmmss").format(date);
                     deepAR.startVideoRecording(Environment.getExternalStorageDirectory().toString() + File.separator + "snap" + File.separator + name + ".mp4", 1f);
                     recording = true;
+                }
+            }
+        });
+
+        shareButton = (ImageButton)findViewById(R.id.shareButton);
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                File fichier = new File(Environment.getExternalStorageDirectory().toString() + File.separator + "snap");
+                File[] listefichiers = fichier.listFiles();
+                if(listefichiers.length > 0){
+                    Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                    sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "test");
+                    sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(listefichiers[1].getPath())));
+                    sharingIntent.setType("video/mp4");
+                    sharingIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    v.getContext().startActivity(Intent.createChooser(sharingIntent,"Share"));
                 }
             }
         });

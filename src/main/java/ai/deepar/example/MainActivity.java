@@ -1,6 +1,7 @@
 package ai.deepar.example;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
@@ -43,6 +44,8 @@ public class MainActivity extends PermissionsActivity implements AREventListener
     private ImageButton previousMask;
     private ImageButton videoButton;
     private ImageButton shareButton;
+    private ImageButton galleryButton;
+    private ImageButton returnButton;
 
     private RadioButton radioMasks;
     private RadioButton radioEffects;
@@ -121,24 +124,6 @@ public class MainActivity extends PermissionsActivity implements AREventListener
 
         masks = new ArrayList<>();
         masks.add(new AREffect("none", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("aviators", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("bigmouth", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("dalmatian", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("flowers", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("koala", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("lion", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("smallface", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("teddycigar", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("kanye", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("tripleface", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("sleepingmask", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("fatify", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("obama", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("mudmask", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("pug", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("slash", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("twistedface", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("grumpycat", AREffect.EffectTypeMask));
         masks.add(new AREffect("dark_vador", AREffect.EffectTypeMask));
         masks.add(new AREffect("casque_xwing", AREffect.EffectTypeMask));
         masks.add(new AREffect("grievoushead", AREffect.EffectTypeMask));
@@ -230,10 +215,10 @@ public class MainActivity extends PermissionsActivity implements AREventListener
         deepAR.switchEffect(currentSlot, activeList.get(index).getPath());
     }
 
-
     boolean recording = false;
 
     private void setupViews() {
+        final Context context = this;
         previousMask = (ImageButton)findViewById(R.id.previousMask);
         nextMask = (ImageButton)findViewById(R.id.nextMask);
 
@@ -281,12 +266,22 @@ public class MainActivity extends PermissionsActivity implements AREventListener
                     deepAR.stopVideoRecording();
                     recording = false;
                 } else {
+                    deepAR.takeScreenshot();
                     new File(Environment.getExternalStorageDirectory().toString() + File.separator + "snap").mkdir();
                     Date date = new Date();
                     String name = new SimpleDateFormat("yyyy-MM-dd_hhmmss").format(date);
                     deepAR.startVideoRecording(Environment.getExternalStorageDirectory().toString() + File.separator + "snap" + File.separator + name + ".mp4", 1f);
                     recording = true;
                 }
+            }
+        });
+
+        galleryButton = (ImageButton)findViewById(R.id.galleryButton);
+        galleryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, GalleryActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -358,9 +353,13 @@ public class MainActivity extends PermissionsActivity implements AREventListener
 
     @Override
     public void screenshotTaken(final Bitmap screenshot) {
-        CharSequence now = DateFormat.format("yyyy_MM_dd_hh_mm_ss", new Date());
+        //CharSequence now = DateFormat.format("yyyy_MM_dd_hh_mm_ss", new Date());
+        new File(Environment.getExternalStorageDirectory().toString() + File.separator + "snap").mkdir();
+        Date date = new Date();
+        String name = new SimpleDateFormat("yyyy-MM-dd_hhmmss").format(date);
         try {
-            File imageFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/DeepAR_" + now + ".jpg");
+            //File imageFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/DeepAR_" + now + ".jpg");
+            File imageFile = new File(Environment.getExternalStorageDirectory().toString() + File.separator + "snap" + File.separator + name +  ".jpg");
             FileOutputStream outputStream = new FileOutputStream(imageFile);
             int quality = 100;
             screenshot.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
@@ -371,6 +370,8 @@ public class MainActivity extends PermissionsActivity implements AREventListener
         } catch (Throwable e) {
             e.printStackTrace();
         }
+
+
     }
 
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ai.deepar.example.GalleryActivity">
+
+    <ImageButton
+        android:id="@+id/returnButton"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@null"
+        android:onClick="changeLayout"
+        android:scaleType="centerInside"
+        android:src="@drawable/record_selector"
+        tools:layout_editor_absoluteX="311dp"
+        tools:layout_editor_absoluteY="425dp" />
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/list"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+</android.support.constraint.ConstraintLayout>

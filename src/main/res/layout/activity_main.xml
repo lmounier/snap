@@ -7,14 +7,24 @@
     tools:context="ai.deepar.example.MainActivity">
 
     <SurfaceView
+        android:id="@+id/surface"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/surface"/>
+        android:layout_height="match_parent" />
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/galleryButton"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_above="@+id/nextMask"
+            android:layout_alignEnd="@+id/nextMask"
+            android:background="@null"
+            android:scaleType="centerInside"
+            android:src="@drawable/record_selector" />
 
         <ImageButton
             android:id="@+id/recordButton"
@@ -51,7 +61,6 @@
 
         <ImageButton
             android:id="@+id/switchCamera"
-
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentStart="true"
@@ -89,13 +98,13 @@
             android:src="@drawable/arrow_right" />
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_marginBottom="5dp"
-            android:orientation="horizontal"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:id="@+id/linearLayout">
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal">
 
             <RelativeLayout
                 android:layout_width="70dp"
@@ -103,65 +112,67 @@
 
                 <RadioButton
                     android:id="@+id/masks"
-                    android:layout_centerHorizontal="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
                     android:buttonTint="@android:color/white"
-                    android:checked="true"/>
+                    android:checked="true" />
 
                 <TextView
                     android:id="@+id/textMasks"
-                    android:text="Masks"
-                    android:textColor="#ffffff"
-                    android:textAlignment="center"
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@id/masks"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/masks"
+                    android:layout_centerHorizontal="true"
+                    android:text="Masks"
+                    android:textAlignment="center"
+                    android:textColor="#ffffff" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="70dp"
                 android:layout_height="wrap_content">
 
                 <RadioButton
                     android:id="@+id/effects"
-                    android:layout_centerHorizontal="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
                     android:buttonTint="@android:color/white"
-                    android:checked="false"/>
+                    android:checked="false" />
 
                 <TextView
                     android:id="@+id/textEffects"
-                    android:text="Effects"
-                    android:textColor="#ffffff"
-                    android:textAlignment="center"
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@id/effects"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/effects"
+                    android:layout_centerHorizontal="true"
+                    android:text="Effects"
+                    android:textAlignment="center"
+                    android:textColor="#ffffff" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="70dp"
                 android:layout_height="wrap_content">
 
                 <RadioButton
                     android:id="@+id/filters"
-                    android:layout_centerHorizontal="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
                     android:buttonTint="@android:color/white"
-                    android:checked="false"/>
+                    android:checked="false" />
 
                 <TextView
                     android:id="@+id/textFilters"
-                    android:text="Filters"
-                    android:textColor="#ffffff"
-                    android:textAlignment="center"
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@id/filters"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/filters"
+                    android:layout_centerHorizontal="true"
+                    android:text="Filters"
+                    android:textAlignment="center"
+                    android:textColor="#ffffff" />
             </RelativeLayout>
         </LinearLayout>
 

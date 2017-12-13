@@ -17,8 +17,10 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +39,7 @@ public class MainActivity extends PermissionsActivity implements AREventListener
     private ImageButton switchCamera;
     private ImageButton nextMask;
     private ImageButton previousMask;
+    private ImageButton videoButton;
 
     private RadioButton radioMasks;
     private RadioButton radioEffects;
@@ -257,15 +260,22 @@ public class MainActivity extends PermissionsActivity implements AREventListener
         screenshotBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 deepAR.takeScreenshot();
+            }
+        });
 
-                // Video recording example
+        videoButton = (ImageButton)findViewById(R.id.videoButton);
+        videoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 if (recording) {
                     deepAR.stopVideoRecording();
                     recording = false;
                 } else {
-                    deepAR.startVideoRecording(Environment.getExternalStorageDirectory().toString() + File.separator + "video.mp4", 1f);
+                    new File(Environment.getExternalStorageDirectory().toString() + File.separator + "snap").mkdir();
+                    Date date = new Date();
+                    String name = new SimpleDateFormat("yyyy-MM-dd_hhmmss").format(date);
+                    deepAR.startVideoRecording(Environment.getExternalStorageDirectory().toString() + File.separator + "snap" + File.separator + name + ".mp4", 1f);
                     recording = true;
                 }
             }

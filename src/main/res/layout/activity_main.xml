@@ -22,12 +22,24 @@
             android:id="@+id/recordButton"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="60dp"
+            android:layout_above="@+id/linearLayout"
+            android:layout_alignStart="@+id/linearLayout"
+            android:layout_marginStart="28dp"
             android:background="@null"
             android:scaleType="centerInside"
             android:src="@drawable/record_selector" />
+
+        <ImageButton
+            android:id="@+id/videoButton"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_above="@+id/linearLayout"
+            android:layout_marginStart="17dp"
+            android:layout_toEndOf="@+id/recordButton"
+            android:background="@null"
+            android:scaleType="centerInside"
+            android:src="@drawable/record_selector" />
+
 
         <ImageButton
             android:id="@+id/switchCamera"
@@ -74,7 +86,8 @@
             android:layout_marginBottom="5dp"
             android:orientation="horizontal"
             android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true">
+            android:layout_alignParentBottom="true"
+            android:id="@+id/linearLayout">
 
             <RelativeLayout
                 android:layout_width="70dp"

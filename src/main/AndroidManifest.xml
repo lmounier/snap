@@ -31,9 +31,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".GalleryActivity"
-            android:theme="@style/AppTheme.NoTitle"/>
+            android:theme="@style/AppTheme.NoTitle"
+            android:screenOrientation="portrait"/>
         <activity android:name=".VideoViewActivity"
-            android:theme="@style/AppTheme.NoTitle"/>
+            android:theme="@style/AppTheme.NoTitle"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

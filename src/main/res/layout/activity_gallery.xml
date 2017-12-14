@@ -20,12 +20,11 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list"
-        android:layout_width="320dp"
+        android:layout_width="310dp"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="59dp"
-        tools:layout_editor_absoluteY="31dp" />
-
+        tools:layout_editor_absoluteY="0dp" />
 </android.support.constraint.ConstraintLayout>

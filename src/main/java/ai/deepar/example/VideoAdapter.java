@@ -1,6 +1,7 @@
 package ai.deepar.example;
 
-import android.graphics.drawable.Drawable;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.app.AlertDialog;
@@ -8,12 +9,11 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
-import java.net.URI;
-import java.util.Arrays;
 import java.util.List;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder> {
@@ -76,6 +76,17 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
                     new AlertDialog.Builder(itemView.getContext())
                             .setTitle(currentPair.first.getName())
                             .setMessage(currentPair.second.getPath())
+                            .setNeutralButton("Partager",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                                            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "test");
+                                            sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(currentPair.first));
+                                            sharingIntent.setType("video/mp4");
+                                            sharingIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                            itemView.getContext().startActivity(Intent.createChooser(sharingIntent,"Share"));
+                                        }
+                                    })
                             .show();
                 }
             });
@@ -84,7 +95,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
         public void display(Pair<File, File> pair) {
             currentPair = pair;
             name.setText(pair.first.getName());
-            //image.setImageDrawable(Drawable.createFromPath(pair.second.getPath()));
+            image.setImageURI(Uri.parse(pair.second.getPath()));
         }
     }
 

@@ -77,7 +77,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
+                public void onClick(final View view) {
                     new AlertDialog.Builder(itemView.getContext())
                             .setTitle(currentPair.first.getName())
                             .setMessage(currentPair.second.getPath())
@@ -95,18 +95,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
                             .setPositiveButton("Lire",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
-                                            VideoView videoView = ((VideoView) itemView.findViewById(R.id.videoView));
-                                            MediaController mc = new MediaController(videoView.getContext());
-                                            videoView.setVideoURI(Uri.fromFile(currentPair.first));
-                                            videoView.setMediaController(mc);
-                                            videoView.requestFocus();
-                                            videoView.setVisibility(View.VISIBLE);
-                                            mc.setAnchorView(videoView);
-                                            ((ViewGroup) mc.getParent()).removeView(mc);
-                                            ((FrameLayout) itemView.findViewById(R.id.videoViewWrapper)).addView(mc);
-                                            mc.setVisibility(View.VISIBLE);
-
-                                            videoView.start();
+                                            // Start NewActivity.class
+                                            Intent myIntent = new Intent(itemView.getContext(),
+                                                    VideoViewActivity.class);
+                                            myIntent.putExtra("name_of_extra", currentPair.first.getPath());
+                                            itemView.getContext().startActivity(myIntent);
                                         }
                                     })
                             .show();

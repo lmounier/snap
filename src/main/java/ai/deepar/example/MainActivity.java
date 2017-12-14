@@ -9,8 +9,8 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.StrictMode;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -28,11 +29,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
 
 import ai.deepar.ar.AREventListener;
 import ai.deepar.ar.CameraGrabber;
 import ai.deepar.ar.CameraGrabberListener;
 import ai.deepar.ar.DeepAR;
+import ai.deepar.example.ChronoM;
+
+import static java.lang.Math.round;
 
 public class MainActivity extends PermissionsActivity implements AREventListener, SurfaceHolder.Callback {
 
@@ -67,6 +72,7 @@ public class MainActivity extends PermissionsActivity implements AREventListener
     private int currentMask=0;
     private int currentEffect=0;
     private int currentFilter=0;
+    private int time =0;
 
     ArrayList<AREffect> masks;
     ArrayList<AREffect> effects;
@@ -74,6 +80,44 @@ public class MainActivity extends PermissionsActivity implements AREventListener
 
     private DeepAR deepAR;
     private String nameFile;
+    private TextView chrono;
+    Handler handler2;
+    final Runnable runnableCode = new Runnable() {
+        @Override
+        public void run() {
+            time++;
+            handler2.postDelayed(this, 1000);
+            String time2;
+            if(time >= 60){
+                int minute = round(time/60);
+                int seconde = time%60;
+                String seconde2 = "";
+                if(seconde < 10){
+                    seconde2 = "0" + seconde;
+                } else{
+                    seconde2 = seconde + "";
+                }
+                time2 = "0" + minute + ":" + seconde2;
+            }else{
+                String seconde;
+                if(time < 10){
+                    seconde = "0" + time;
+                } else{
+                    seconde = time + "";
+                }
+                time2 = "00:" + seconde;
+            }
+            chrono.setText(time2);
+        }
+    };
+
+    Handler handler = new Handler();
+    final  Runnable runnable2 = new Runnable() {
+        @Override
+        public void run() {
+            stopRecording();
+        }
+    };
 
 
     @Override
@@ -84,6 +128,7 @@ public class MainActivity extends PermissionsActivity implements AREventListener
         deepAR = new DeepAR();
         deepAR.initialize(this, this);
     }
+
 
     @Override
     protected void onStart() {
@@ -259,6 +304,8 @@ public class MainActivity extends PermissionsActivity implements AREventListener
             public void onCameraError(String errorMsg) {
                 Log.e(TAG, errorMsg);
             }
+
+
         });
 
         setupEffects();
@@ -276,8 +323,7 @@ public class MainActivity extends PermissionsActivity implements AREventListener
             @Override
             public void onClick(View v) {
                 if (recording) {
-                    deepAR.stopVideoRecording();
-                    recording = false;
+                    stopRecording();
                 } else {
                     deepAR.takeScreenshot();
                     new File(Environment.getExternalStorageDirectory().toString() + File.separator + "snap").mkdir();
@@ -285,9 +331,15 @@ public class MainActivity extends PermissionsActivity implements AREventListener
                     nameFile = new SimpleDateFormat("yyyy-MM-dd_hhmmss").format(date);
                     deepAR.startVideoRecording(Environment.getExternalStorageDirectory().toString() + File.separator + "snap" + File.separator + nameFile + ".mp4", 1f);
                     recording = true;
+
+                    handler2.post(runnableCode);
+                    handler.postDelayed(runnable2, 120000);
+
                 }
             }
         });
+
+
 
         galleryButton = (ImageButton)findViewById(R.id.galleryButton);
         galleryButton.setOnClickListener(new View.OnClickListener() {
@@ -362,6 +414,11 @@ public class MainActivity extends PermissionsActivity implements AREventListener
                 radioButtonClicked();
             }
         });
+
+        chrono = (TextView)findViewById(R.id.chrono);
+        handler2 = new Handler();
+        chrono.setText("00:00");
+
         effectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -385,6 +442,20 @@ public class MainActivity extends PermissionsActivity implements AREventListener
             }
         });
     }
+
+    public void stopRecording() {
+        deepAR.stopVideoRecording();
+        recording = false;
+        Intent myIntent = new Intent(videoButton.getContext(),
+                VideoViewActivity.class);
+        myIntent.putExtra("name_of_extra", Environment.getExternalStorageDirectory().toString() + File.separator + "snap" + File.separator + nameFile + ".mp4");
+        videoButton.getContext().startActivity(myIntent);
+        handler.removeCallbacks(runnable2);
+        handler2.removeCallbacks(runnableCode);
+        chrono.setText("00:00");
+        time = 0;
+    }
+
 
     @Override
     public void screenshotTaken(final Bitmap screenshot) {

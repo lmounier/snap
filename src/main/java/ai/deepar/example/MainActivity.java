@@ -266,6 +266,10 @@ public class MainActivity extends PermissionsActivity implements AREventListener
                 if (recording) {
                     deepAR.stopVideoRecording();
                     recording = false;
+                    Intent myIntent = new Intent(videoButton.getContext(),
+                            VideoViewActivity.class);
+                    myIntent.putExtra("name_of_extra", Environment.getExternalStorageDirectory().toString() + File.separator + "snap" + File.separator + nameFile + ".mp4");
+                    videoButton.getContext().startActivity(myIntent);
                 } else {
                     deepAR.takeScreenshot();
                     new File(Environment.getExternalStorageDirectory().toString() + File.separator + "snap").mkdir();

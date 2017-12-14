@@ -378,4 +378,5 @@ public class MainActivity extends PermissionsActivity implements AREventListener
 
     @Override
     public void videoRecordingPrepared() {}
+
 }

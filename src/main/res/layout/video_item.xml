@@ -29,4 +29,25 @@
         android:textSize="20sp"
         android:textStyle="italic" />
 
+    <RelativeLayout
+        android:layout_width="400dp"
+        android:layout_height="640dp">
+
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="400dp"
+            android:layout_height="640dp"
+            android:visibility="invisible"
+            android:layout_centerInParent="true"/>
+
+        <FrameLayout
+            android:id="@+id/videoViewWrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+        </FrameLayout>
+
+    </RelativeLayout>
+
+
 </LinearLayout>

@@ -1,8 +1,10 @@
 package ai.deepar.example;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.util.Pair;
@@ -10,8 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import java.io.File;
 import java.util.List;
@@ -79,12 +84,29 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
                             .setNeutralButton("Partager",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
-                                            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-                                            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "test");
+                                            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                                            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "test");
                                             sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(currentPair.first));
                                             sharingIntent.setType("video/mp4");
                                             sharingIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                            itemView.getContext().startActivity(Intent.createChooser(sharingIntent,"Share"));
+                                            itemView.getContext().startActivity(Intent.createChooser(sharingIntent, "Share"));
+                                        }
+                                    })
+                            .setPositiveButton("Lire",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            VideoView videoView = ((VideoView) itemView.findViewById(R.id.videoView));
+                                            MediaController mc = new MediaController(videoView.getContext());
+                                            videoView.setVideoURI(Uri.fromFile(currentPair.first));
+                                            videoView.setMediaController(mc);
+                                            videoView.requestFocus();
+                                            videoView.setVisibility(View.VISIBLE);
+                                            mc.setAnchorView(videoView);
+                                            ((ViewGroup) mc.getParent()).removeView(mc);
+                                            ((FrameLayout) itemView.findViewById(R.id.videoViewWrapper)).addView(mc);
+                                            mc.setVisibility(View.VISIBLE);
+
+                                            videoView.start();
                                         }
                                     })
                             .show();

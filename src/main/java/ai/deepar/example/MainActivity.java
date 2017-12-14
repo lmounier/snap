@@ -15,6 +15,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -89,7 +90,8 @@ public class MainActivity extends PermissionsActivity implements AREventListener
             @Override
             public void onAllPermissionsGranted() {
                 setContentView(R.layout.activity_main);
-
+                //setContentView(R.layout.header);
+                setImage();
                 setupViews();
 
             }
@@ -414,4 +416,9 @@ public class MainActivity extends PermissionsActivity implements AREventListener
 
     @Override
     public void videoRecordingPrepared() {}
-}
+
+    private void setImage(){
+        ImageView iv = (ImageView)findViewById(R.id.bandeau);
+        iv.setImageResource(R.drawable.bandeau);}
+    }
+

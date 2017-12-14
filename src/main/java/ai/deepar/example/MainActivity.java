@@ -67,6 +67,7 @@ public class MainActivity extends PermissionsActivity implements AREventListener
     ArrayList<AREffect> filters;
 
     private DeepAR deepAR;
+    private String nameFile;
 
 
     @Override
@@ -269,8 +270,8 @@ public class MainActivity extends PermissionsActivity implements AREventListener
                     deepAR.takeScreenshot();
                     new File(Environment.getExternalStorageDirectory().toString() + File.separator + "snap").mkdir();
                     Date date = new Date();
-                    String name = new SimpleDateFormat("yyyy-MM-dd_hhmmss").format(date);
-                    deepAR.startVideoRecording(Environment.getExternalStorageDirectory().toString() + File.separator + "snap" + File.separator + name + ".mp4", 1f);
+                    nameFile = new SimpleDateFormat("yyyy-MM-dd_hhmmss").format(date);
+                    deepAR.startVideoRecording(Environment.getExternalStorageDirectory().toString() + File.separator + "snap" + File.separator + nameFile + ".mp4", 1f);
                     recording = true;
                 }
             }
@@ -353,13 +354,10 @@ public class MainActivity extends PermissionsActivity implements AREventListener
 
     @Override
     public void screenshotTaken(final Bitmap screenshot) {
-        //CharSequence now = DateFormat.format("yyyy_MM_dd_hh_mm_ss", new Date());
         new File(Environment.getExternalStorageDirectory().toString() + File.separator + "snap").mkdir();
         Date date = new Date();
-        String name = new SimpleDateFormat("yyyy-MM-dd_hhmmss").format(date);
         try {
-            //File imageFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/DeepAR_" + now + ".jpg");
-            File imageFile = new File(Environment.getExternalStorageDirectory().toString() + File.separator + "snap" + File.separator + name +  ".jpg");
+            File imageFile = new File(Environment.getExternalStorageDirectory().toString() + File.separator + "snap" + File.separator + nameFile +  ".jpg");
             FileOutputStream outputStream = new FileOutputStream(imageFile);
             int quality = 100;
             screenshot.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);

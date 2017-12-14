@@ -16,6 +16,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/chrono"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/switchCamera"
+            android:textAlignment="center"
+            android:textColor="#ffffff"
+            android:textSize="30sp"
+            android:visibility="visible"
+            tools:text="00:00:00" />
+
         <ImageButton
             android:id="@+id/galleryButton"
             android:layout_width="70dp"

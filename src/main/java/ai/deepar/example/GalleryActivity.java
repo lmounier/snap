@@ -40,7 +40,7 @@ public class GalleryActivity extends AppCompatActivity {
         };
         File[] files = directory.listFiles(filter);
         List<Pair<File, File>> allFiles = new ArrayList();
-        for(int i=0; i<files.length; i++){
+        for(int i=files.length-1; i>=0; i--){
             System.out.println(files[i].getName());
             String name = files[i].getName();
             String nomCourt = name.substring(0,name.indexOf('.'));

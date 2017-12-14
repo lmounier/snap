@@ -17,50 +17,88 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/header" />
-
         <ImageButton
-            android:id="@+id/recordButton"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_above="@+id/linearLayout"
-            android:layout_alignStart="@+id/linearLayout"
-            android:layout_marginStart="28dp"
-            android:background="@null"
+            android:id="@+id/switchCam"
+            android:layout_width="100dp"
+            android:layout_height="75dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/switchCamera"
+            android:layout_below="@+id/switchCamera"
+            android:background="@android:color/transparent"
             android:scaleType="centerInside"
-            android:src="@drawable/record_selector" />
-
-        <ImageButton
-            android:id="@+id/videoButton"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_above="@+id/linearLayout"
-            android:layout_marginStart="17dp"
-            android:layout_toEndOf="@+id/recordButton"
-            android:background="@null"
-            android:scaleType="centerInside"
-            android:src="@drawable/record_selector" />
+            android:src="@drawable/switch_rouge" />
 
         <ImageButton
             android:id="@+id/shareButton"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_above="@+id/previousMask"
-            android:layout_alignStart="@+id/switchCamera"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="90dp"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/bouton_partage" />
+
+        <include layout="@layout/header" />
+
+        <include layout="@layout/footer" />
+
+        <ImageButton
+            android:id="@+id/galleryButton"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_alignBottom="@+id/recordButton"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="30dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
             android:background="@null"
             android:scaleType="centerInside"
-            android:src="@drawable/record_selector" />
+            android:src="@drawable/galerie" />
+
+        <ImageButton
+            android:id="@+id/recordButton"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="45dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:scaleType="centerInside"
+            android:src="@drawable/bouton_photo" />
+
+        <ImageButton
+            android:id="@+id/videoButton"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_alignBottom="@+id/recordButton"
+            android:layout_alignEnd="@+id/recordButton"
+            android:layout_weight="1"
+            android:background="@null"
+            android:scaleType="centerInside"
+            android:src="@drawable/bouton_film" />
+
+        <ImageButton
+            android:id="@+id/EffectButton"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignBottom="@+id/galleryButton"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="14dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:scaleType="centerInside"
+            android:src="@drawable/bouton_custom" />
 
 
         <ImageButton
             android:id="@+id/switchCamera"
-
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_above="@+id/nextMask"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginBottom="96dp"
+            android:adjustViewBounds="true"
             android:background="@null"
             android:scaleType="centerInside"
             android:src="@drawable/camera_white" />
@@ -68,12 +106,12 @@
 
         <ImageButton
             android:id="@+id/previousMask"
-            android:layout_width="50dp"
+            android:layout_width="75dp"
             android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="20dp"
-            android:layout_marginStart="20dp"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="22dp"
             android:background="@null"
             android:scaleType="centerInside"
             android:src="@drawable/arrow_left" />
@@ -81,24 +119,25 @@
 
         <ImageButton
             android:id="@+id/nextMask"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
+            android:layout_width="75dp"
+            android:layout_height="200dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginBottom="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="17dp"
             android:background="@null"
             android:scaleType="centerInside"
             android:src="@drawable/arrow_right" />
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_marginBottom="5dp"
-            android:orientation="horizontal"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:id="@+id/linearLayout">
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/EffectButton"
+            android:layout_alignLeft="@+id/EffectButton"
+            android:layout_below="@+id/previousMask"
+            android:layout_marginEnd="31dp"
+            android:orientation="vertical"
+            android:visibility="invisible">
 
             <RelativeLayout
                 android:layout_width="70dp"
@@ -106,75 +145,71 @@
 
                 <RadioButton
                     android:id="@+id/masks"
-                    android:layout_centerHorizontal="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
                     android:buttonTint="@android:color/white"
-                    android:checked="true"/>
+                    android:checked="true" />
 
+                <TextView
+                    android:id="@+id/textMasks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/masks"
+                    android:layout_centerHorizontal="true"
+                    android:text="Masks"
+                    android:textAlignment="center"
+                    android:textColor="#ffffff" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="70dp"
                 android:layout_height="wrap_content">
 
                 <RadioButton
                     android:id="@+id/effects"
-                    android:layout_centerHorizontal="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
                     android:buttonTint="@android:color/white"
-                    android:checked="false"/>
+                    android:checked="false" />
 
                 <TextView
                     android:id="@+id/textEffects"
-                    android:text="Effects"
-                    android:textColor="#ffffff"
-                    android:textAlignment="center"
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@id/effects"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/effects"
+                    android:layout_centerHorizontal="true"
+                    android:text="Effects"
+                    android:textAlignment="center"
+                    android:textColor="#ffffff" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="70dp"
                 android:layout_height="wrap_content">
 
                 <RadioButton
                     android:id="@+id/filters"
-                    android:layout_centerHorizontal="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
                     android:buttonTint="@android:color/white"
-                    android:checked="false"/>
+                    android:checked="false" />
 
                 <TextView
                     android:id="@+id/textFilters"
-                    android:text="Filters"
-                    android:textColor="#ffffff"
-                    android:textAlignment="center"
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@id/filters"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/filters"
+                    android:layout_centerHorizontal="true"
+                    android:text="Filters"
+                    android:textAlignment="center"
+                    android:textColor="#ffffff" />
             </RelativeLayout>
-
         </LinearLayout>
 
 
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/switchCamera"
-            android:layout_marginTop="50dp"
-            android:layout_toEndOf="@+id/previousMask"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
     </RelativeLayout>
 
 </FrameLayout>

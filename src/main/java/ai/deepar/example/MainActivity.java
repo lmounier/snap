@@ -1,6 +1,7 @@
 package ai.deepar.example;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
@@ -16,6 +17,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -42,9 +44,15 @@ public class MainActivity extends PermissionsActivity implements AREventListener
     private ImageButton switchCamera;
     private ImageButton nextMask;
     private ImageButton previousMask;
-    private ImageButton videoButton;
     private ImageButton shareButton;
+    private ImageButton galleryButton;
+    private ImageButton returnButton;
+    private ImageButton effectButton;
+    private ImageButton switchButton;
+    private ImageButton recordButton;
+    private ImageButton videoButton;
 
+    private LinearLayout radioLayout;
     private RadioButton radioMasks;
     private RadioButton radioEffects;
     private RadioButton radioFilters;
@@ -65,6 +73,7 @@ public class MainActivity extends PermissionsActivity implements AREventListener
     ArrayList<AREffect> filters;
 
     private DeepAR deepAR;
+    private String nameFile;
 
 
     @Override
@@ -90,7 +99,6 @@ public class MainActivity extends PermissionsActivity implements AREventListener
             @Override
             public void onAllPermissionsGranted() {
                 setContentView(R.layout.activity_main);
-                //setContentView(R.layout.header);
                 setImage();
                 setupViews();
 
@@ -123,24 +131,6 @@ public class MainActivity extends PermissionsActivity implements AREventListener
 
         masks = new ArrayList<>();
         masks.add(new AREffect("none", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("aviators", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("bigmouth", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("dalmatian", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("flowers", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("koala", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("lion", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("smallface", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("teddycigar", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("kanye", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("tripleface", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("sleepingmask", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("fatify", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("obama", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("mudmask", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("pug", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("slash", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("twistedface", AREffect.EffectTypeMask));
-        //masks.add(new AREffect("grumpycat", AREffect.EffectTypeMask));
         masks.add(new AREffect("dark_vador", AREffect.EffectTypeMask));
         masks.add(new AREffect("casque_xwing", AREffect.EffectTypeMask));
         masks.add(new AREffect("grievoushead", AREffect.EffectTypeMask));
@@ -232,13 +222,19 @@ public class MainActivity extends PermissionsActivity implements AREventListener
         deepAR.switchEffect(currentSlot, activeList.get(index).getPath());
     }
 
-
     boolean recording = false;
 
     private void setupViews() {
+        final Context context = this;
         previousMask = (ImageButton)findViewById(R.id.previousMask);
         nextMask = (ImageButton)findViewById(R.id.nextMask);
 
+        switchButton = (ImageButton)findViewById(R.id.switchCam);
+        videoButton = (ImageButton)findViewById(R.id.videoButton);
+        recordButton = (ImageButton)findViewById(R.id.recordButton);
+
+        effectButton =  (ImageButton)findViewById(R.id.EffectButton);
+        radioLayout = (LinearLayout)findViewById(R.id.linearLayout);
         radioMasks = (RadioButton)findViewById(R.id.masks);
         radioEffects = (RadioButton)findViewById(R.id.effects);
         radioFilters = (RadioButton)findViewById(R.id.filters);
@@ -283,12 +279,22 @@ public class MainActivity extends PermissionsActivity implements AREventListener
                     deepAR.stopVideoRecording();
                     recording = false;
                 } else {
+                    deepAR.takeScreenshot();
                     new File(Environment.getExternalStorageDirectory().toString() + File.separator + "snap").mkdir();
                     Date date = new Date();
-                    String name = new SimpleDateFormat("yyyy-MM-dd_hhmmss").format(date);
-                    deepAR.startVideoRecording(Environment.getExternalStorageDirectory().toString() + File.separator + "snap" + File.separator + name + ".mp4", 1f);
+                    nameFile = new SimpleDateFormat("yyyy-MM-dd_hhmmss").format(date);
+                    deepAR.startVideoRecording(Environment.getExternalStorageDirectory().toString() + File.separator + "snap" + File.separator + nameFile + ".mp4", 1f);
                     recording = true;
                 }
+            }
+        });
+
+        galleryButton = (ImageButton)findViewById(R.id.galleryButton);
+        galleryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, GalleryActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -356,13 +362,36 @@ public class MainActivity extends PermissionsActivity implements AREventListener
                 radioButtonClicked();
             }
         });
+        effectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (radioLayout.getVisibility() == View.VISIBLE) {
+                    radioLayout.setVisibility(View.INVISIBLE);
+                } else {
+                    radioLayout.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        switchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (videoButton.getVisibility() == View.VISIBLE) {
+                    videoButton.setVisibility(View.INVISIBLE);
+                    recordButton.setVisibility(View.VISIBLE);
+                } else if (videoButton.getVisibility() == View.INVISIBLE){
+                    videoButton.setVisibility(View.VISIBLE);
+                    recordButton.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
     }
 
     @Override
     public void screenshotTaken(final Bitmap screenshot) {
-        CharSequence now = DateFormat.format("yyyy_MM_dd_hh_mm_ss", new Date());
+        new File(Environment.getExternalStorageDirectory().toString() + File.separator + "snap").mkdir();
+        Date date = new Date();
         try {
-            File imageFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/DeepAR_" + now + ".jpg");
+            File imageFile = new File(Environment.getExternalStorageDirectory().toString() + File.separator + "snap" + File.separator + nameFile +  ".jpg");
             FileOutputStream outputStream = new FileOutputStream(imageFile);
             int quality = 100;
             screenshot.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
@@ -417,8 +446,29 @@ public class MainActivity extends PermissionsActivity implements AREventListener
     @Override
     public void videoRecordingPrepared() {}
 
-    private void setImage(){
-        ImageView iv = (ImageView)findViewById(R.id.bandeau);
-        iv.setImageResource(R.drawable.bandeau);}
-    }
+    public void setImage(){
+        ImageView bandeau = (ImageView)findViewById(R.id.bandeau);
+        bandeau.setImageResource(R.drawable.bandeau);
 
+        ImageView bandeauBas = (ImageView)findViewById(R.id.bandeauBas);
+        bandeauBas.setImageResource(R.drawable.bandeau_du_bas);
+
+        ImageView boutonShot = (ImageView)findViewById(R.id.videoButton);
+        boutonShot.setImageResource(R.drawable.bouton_film);
+
+        ImageView boutonVideo = (ImageView)findViewById(R.id.recordButton);
+        boutonVideo.setImageResource(R.drawable.bouton_photo);
+
+        ImageView boutonGallery = (ImageView)findViewById(R.id.galleryButton);
+        boutonGallery.setImageResource(R.drawable.galerie);
+
+        ImageView boutonEffect = (ImageView)findViewById(R.id.EffectButton);
+        boutonEffect.setImageResource(R.drawable.bouton_custom);
+
+        ImageView boutonShare = (ImageView)findViewById(R.id.shareButton);
+        boutonShare.setImageResource(R.drawable.bouton_partage);
+
+        ImageView boutonSwitch = (ImageView)findViewById(R.id.switchCam);
+        boutonSwitch.setImageResource(R.drawable.switch_rouge);
+    }
+}

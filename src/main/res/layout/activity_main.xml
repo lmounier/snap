@@ -7,10 +7,16 @@
     android:layout_height="match_parent"
     tools:context="ai.deepar.example.MainActivity">
 
+
+
     <SurfaceView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/surface"/>
+
+    <include layout="@layout/header" />
+
+    <include layout="@layout/footer" />
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -49,10 +55,6 @@
             android:adjustViewBounds="true"
             android:background="@android:color/transparent"
             android:src="@drawable/bouton_partage" />
-
-        <include layout="@layout/header" />
-
-        <include layout="@layout/footer" />
 
         <ImageButton
             android:id="@+id/galleryButton"

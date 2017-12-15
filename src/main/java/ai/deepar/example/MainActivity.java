@@ -346,6 +346,9 @@ public class MainActivity extends PermissionsActivity implements AREventListener
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, GalleryActivity.class);
+                if(recording) {
+                    stopRecording();
+                }
                 startActivity(intent);
             }
         });

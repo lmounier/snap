@@ -80,7 +80,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
                 public void onClick(final View view) {
                     new AlertDialog.Builder(itemView.getContext())
                             .setTitle(currentPair.first.getName())
-                            .setMessage(currentPair.second.getPath())
                             .setNeutralButton("Partager",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {

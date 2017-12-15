@@ -115,7 +115,7 @@ public class MainActivity extends PermissionsActivity implements AREventListener
     final  Runnable runnable2 = new Runnable() {
         @Override
         public void run() {
-            stopRecording();
+            stopRecording(false);
         }
     };
 
@@ -323,7 +323,7 @@ public class MainActivity extends PermissionsActivity implements AREventListener
             @Override
             public void onClick(View v) {
                 if (recording) {
-                    stopRecording();
+                    stopRecording(false);
                 } else {
                     deepAR.takeScreenshot();
                     new File(Environment.getExternalStorageDirectory().toString() + File.separator + "snap").mkdir();
@@ -347,7 +347,7 @@ public class MainActivity extends PermissionsActivity implements AREventListener
             public void onClick(View v) {
                 Intent intent = new Intent(context, GalleryActivity.class);
                 if(recording) {
-                    stopRecording();
+                    stopRecording(true);
                 }
                 startActivity(intent);
             }
@@ -446,17 +446,19 @@ public class MainActivity extends PermissionsActivity implements AREventListener
         });
     }
 
-    public void stopRecording() {
+    public void stopRecording(Boolean gallery) {
         deepAR.stopVideoRecording();
         recording = false;
-        Intent myIntent = new Intent(videoButton.getContext(),
-                VideoViewActivity.class);
-        myIntent.putExtra("name_of_extra", Environment.getExternalStorageDirectory().toString() + File.separator + "snap" + File.separator + nameFile + ".mp4");
-        videoButton.getContext().startActivity(myIntent);
         handler.removeCallbacks(runnable2);
         handler2.removeCallbacks(runnableCode);
         chrono.setText("00:00");
         time = 0;
+        if(gallery == false ) {
+            Intent myIntent = new Intent(videoButton.getContext(),
+                    VideoViewActivity.class);
+            myIntent.putExtra("name_of_extra", Environment.getExternalStorageDirectory().toString() + File.separator + "snap" + File.separator + nameFile + ".mp4");
+            videoButton.getContext().startActivity(myIntent);
+        }
     }
 
 
